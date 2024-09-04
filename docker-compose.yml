@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+    environment:
+      # TODO: see if these are necessary?
+      - FLASK_ENV=development
+      - FLASK_APP=main.py
+
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DB_NAME:?error}
+      MYSQL_USER: ${MYSQL_DB_USER:?error}
+      MYSQL_PASSWORD: ${MYSQL_DB_PASSWORD:?error}
+      # this one is mandatory
+      # //TODO: see if root user is needed or whats the use
+      MYSQL_ROOT_PASSWORD: rootpassword
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80

@@ -1,0 +1,18 @@
+__pycache__
+
+# compiled output
+
+# Logs
+
+# Tests
+
+# IDEs and editors
+
+# IDE - VSCode
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
