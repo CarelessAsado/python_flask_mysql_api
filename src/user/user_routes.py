@@ -12,11 +12,7 @@ def getAllUsers():
     users = UserService.get_all_users()
         # Create a list of user dictionaries to return as JSON
     users_list = [
-        {
-            "id": user.id,
-            "username": user.username,
-            "email": user.email
-        } for user in users
+        user.to_dict() for user in users
     ]
     
     return jsonify(users_list)
@@ -32,11 +28,7 @@ def deleteSingleUser(userId):
     users = UserService.get_all_users()
         # Create a list of user dictionaries to return as JSON
     users_list = [
-        {
-            "id": user.id,
-            "username": user.username,
-            "email": user.email
-        } for user in users
+       user.to_dict() for user in users
     ]
     
     return jsonify(users_list)
