@@ -1,6 +1,8 @@
 from flask import Blueprint, request,jsonify
 from src.user.user_model import User
+from src.company.company_model import Company
 from src.user.user_service import UserService
+from src.company.company_service import CompanyService
 from src.db.connect import db
 
 user_bp = Blueprint('user', __name__)
@@ -43,7 +45,10 @@ def add_user():
     if not username or not email:
         return jsonify({"error": "Missing required fields"}), 400
     print('before')
-    new_user = User(username=username, email=email)
+    new_company=Company(name='Rod company')
+    CompanyService.createCompany(new_company)
+    # TODO: check how can these args be typed, I checked mypy, and also playing with BaseModel, but no easy solution yet
+    new_user = User(username=username, email=email,company_id=new_company.id)
     print('after')
 
     try:

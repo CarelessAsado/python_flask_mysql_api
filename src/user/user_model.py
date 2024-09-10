@@ -1,20 +1,18 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String,ForeignKey
 from src.db.connect import db
 
-
-class User(db.Model):
+class User( db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(150), unique=True) 
     email: Mapped[str] = mapped_column(String(255)) 
+    # TODO: company table name is hardcoded
+    company_id: Mapped[int] = mapped_column(ForeignKey(f"company.id"))
 
     def __repr__(self):
+      print(self)
       return f"<User(id={self.id}, username={self.username}, email={self.email})>"
     
-      # Add a method to serialize the user object to a dictionary
+      # Serialize the object to a dictionary
     def to_dict(self):
-        return {
-            "id": self.id,
-            "username": self.username,
-            "email": self.email
-        }
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
