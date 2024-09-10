@@ -14,5 +14,6 @@ class User( db.Model):
       return f"<User(id={self.id}, username={self.username}, email={self.email})>"
     
       # Serialize the object to a dictionary
+      # TODO: ver https://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json q capaz hay otra alternativa
     def to_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
