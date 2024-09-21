@@ -1,4 +1,4 @@
-from src.user.user_model import User
+from src.models.user.user_model import User
 from src.db.connect import db
 
 # TODO: add return types

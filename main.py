@@ -1,16 +1,17 @@
 from flask import Flask
 from src.db.connect import db
 from src.config_env.config import Config
-from src.user.user_routes import user_bp
+from src.models.user.user_routes import user_bp
 
 # import models so tables can be automatically created
-from src.company.company_model import Company
-from src.user.user_model import User
+from src.models.company.company_model import Company
+from src.models.user.user_model import User
 
 # TODO: copiar estructura de este archivo
 # https://www.youtube.com/watch?v=b_qmjG7n-Ao
+# TODO: seguir con relationships, modelar complex db
 # TODO: seguir con USER SERVICE api delete update create read. Agregar db.session q creo q es el metodo correcto, pero investigar y dejar todo asentado
-# TODO: armar una relacion many to many
+
 
 # TODO: AUTH
 

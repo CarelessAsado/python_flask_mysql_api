@@ -1,4 +1,4 @@
-from src.company.company_model import Company
+from src.models.company.company_model import Company
 from src.db.connect import db
 
 # TODO: add return types

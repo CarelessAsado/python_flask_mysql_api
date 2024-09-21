@@ -1,7 +1,7 @@
 ## Installation
 
 ```bash
-$ pip install
+$ pip install -r requirements.txt
 ```
 
 ## Configuring the app

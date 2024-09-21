@@ -1,8 +1,8 @@
 from flask import Blueprint, request,jsonify
-from src.user.user_model import User
-from src.company.company_model import Company
-from src.user.user_service import UserService
-from src.company.company_service import CompanyService
+from src.models.user.user_model import User
+from src.models.company.company_model import Company
+from src.models.user.user_service import UserService
+from src.models.company.company_service import CompanyService
 from src.db.connect import db
 
 user_bp = Blueprint('user', __name__)
