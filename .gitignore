@@ -11,8 +11,9 @@ __pycache__
 # IDE - VSCode
 
 # Environment
-.env
-.venv
+*.env
+*.venv
 env/
 venv/
 ENV/
+*.REST

@@ -5,9 +5,8 @@ from src.db.connect import db
 
 class CompanyService:
     @staticmethod
-    def createCompany(company=Company):
-        db.session.add(company)
-        db.session.commit()
+    def createCompany(company=Company, currentSession=db.session):
+            currentSession.add(company)
 
     @staticmethod
     def getSingleCompanyOrFail(companyId):

@@ -4,6 +4,11 @@ from src.db.connect import db
 # TODO: add return types
 
 class UserService:
+    
+    @staticmethod
+    def createUser(user=User, currentSession=db.session):
+            currentSession.add(user)
+
     @staticmethod
     def get_user_by_id(user_id):
         return User.query.get(user_id)

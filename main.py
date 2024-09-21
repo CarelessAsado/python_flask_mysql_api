@@ -1,6 +1,8 @@
 from flask import Flask
 from src.db.connect import db
 from src.config_env.config import Config
+from src.errors.error_handlers import registerErrorHandlers
+
 from src.models.user.user_routes import user_bp
 
 # import models so tables can be automatically created
@@ -33,6 +35,9 @@ db.init_app(app)
 # https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#create-the-tables
 with app.app_context():
     db.create_all()
+
+# Register error handlers
+registerErrorHandlers(app)
 
 # Register routes
 app.register_blueprint(user_bp, url_prefix=f'/{BaseUrlRouting.USERS}')
