@@ -12,18 +12,18 @@ class UserService:
     @staticmethod
     def get_user_by_id(user_id):
         return User.query.get(user_id)
+    
+    @staticmethod
     def getSingleUserOrFail(userId):
         return  db.get_or_404(User, userId)
 
     @staticmethod
     def get_all_users():
+        # todo: USE DB.EXECUTE METHOD
         return User.query.all()
 
     @staticmethod
-    def delete_user_by_id(user_id):
-        user = User.query.get(user_id)
-        if user:
-            db.session.delete(user)
-            db.session.commit()
-            return True
-        return False
+    def deleteUser(userId=User.id,dataBase=db)-> User:
+        user = dataBase.session.execute(dataBase.select(User).filter_by(id=userId)).scalar_one()
+        dataBase.session.delete(user)
+        return user

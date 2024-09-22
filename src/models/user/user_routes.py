@@ -20,23 +20,19 @@ def getAllUsers():
     return jsonify(users_list)
 
 @user_bp.get('/<int:userId>')
-# TODO: check if userId string needs to be hardcoded
+# userId string needs to be hardcoded, otherwise it fails
 def getSingleUser(userId):
     userFound= UserService.getSingleUserOrFail(userId)
-    
     return jsonify(userFound.to_dict())
-    # Obtener los parámetros de consulta de la URL
-    query_params = request.args
-    users = UserService.get_all_users()
-        # Create a list of user dictionaries to return as JSON
-    users_list = [
-       user.to_dict() for user in users
-    ]
-    
-    return jsonify(users_list)
+
+@user_bp.delete('/<int:userId>')
+def deleteSingleUser(userId):
+    userDeleted = UserService.deleteUser(userId,db)
+    db.session.commit()
+    return jsonify(userDeleted.to_dict())
 
 @user_bp.post('/')
-def add_user():
+def createUser():
 
     data = request.json
 
@@ -47,23 +43,20 @@ def add_user():
 
     # if not username or not email:
     #     return jsonify({"error": "Missing required fields"}), 400
-    # TODO: abstract to create user
-    # TODO: delete user
-    # TODO: remove fac key/relation if present on Company table
-    # Todo: validation with validators in sqlalchemy or library https://dev.to/aylolo/controlling-data-with-flask-sqlalchemy-validations-vs-constraints-219o
+
     new_company=Company(name=companyName)
+    currentSession= db.session
+    CompanyService.createCompany(new_company,currentSession)
+    # so that company_id converts from null to an actual id
+    currentSession.flush()
 
     # TODO: check how can these args be typed, I checked mypy, and also playing with BaseModel, but no easy solution yet
     new_user = User(username=username, email=email,company_id=new_company.id)
-    print('after')
-
-    currentSession= db.session
-    
-    CompanyService.createCompany(new_company,currentSession)
     UserService.createUser(new_user,currentSession)
 
     currentSession.commit()
+
     return jsonify({
         "message": "User added successfully!",
-        "user": new_user.to_dict()
+        'user': new_user.to_dict()
     }), 201
