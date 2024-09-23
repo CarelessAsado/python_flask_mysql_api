@@ -4,6 +4,9 @@ from src.models.company.company_model import Company
 from src.models.user.user_service import UserService
 from src.models.company.company_service import CompanyService
 from src.db.connect import db
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+
 
 user_bp = Blueprint('user', __name__)
 
@@ -19,9 +22,21 @@ def getAllUsers():
     
     return jsonify(users_list)
 
+# Protect a route with jwt_required, which will kick out requests
+# without a valid JWT present.
+@user_bp.get("/protected")
+@jwt_required()
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
+
+
+
 @user_bp.get('/<int:userId>')
 # userId string needs to be hardcoded, otherwise it fails
 def getSingleUser(userId):
+    # TODO: add companyId from the user token eventually once auth implemented
     userFound= UserService.getSingleUserOrFail(userId)
     return jsonify(userFound.to_dict())
 

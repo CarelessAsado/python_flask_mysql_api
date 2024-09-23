@@ -27,3 +27,8 @@ class UserService:
         user = dataBase.session.execute(dataBase.select(User).filter_by(id=userId)).scalar_one()
         dataBase.session.delete(user)
         return user
+    
+    @staticmethod
+    def findUserByUsername(userName=User.username)-> User:
+        user = db.session.execute(db.select(User).filter_by(username=userName)).scalar_one()
+        return user
