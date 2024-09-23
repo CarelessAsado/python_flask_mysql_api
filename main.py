@@ -1,16 +1,16 @@
 from flask import Flask
 from src.db.connect import db
 from src.config_env.config import Config
-from flask_jwt_extended import JWTManager
 from src.errors.error_handlers import registerErrorHandlers
 
 from src.models.user.user_routes import user_bp
+from src.auth.auth_routes import auth_bp
 
 # import models so tables can be automatically created
 from src.models.company.company_model import Company
-from src.models.user.user_model import User
+from src.models.user.user_model import User,jwt
 
-# TODO: AUTH: setear bien los secrets aca, ver q la default config busca en headers, hacerlo andar y dsp buscar variedad
+# TODO: pasar el jwt required y el jetjztidentity a un middleware + ver si user_lookup_loader me sirve (remover jwt a otra folder, ver de no mandar pwd al token, ver q poner create token en el user capaz)
 
 # TODO: copiar estructura de este archivo
 # https://www.youtube.com/watch?v=b_qmjG7n-Ao
@@ -27,13 +27,16 @@ from src.models.user.user_model import User
 
 class BaseUrlRouting:
     USERS='users'
+    AUTH='auth'
 
 
 app = Flask(__name__)
 
 # Setup the Flask-JWT-Extended extension
-app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
-jwt = JWTManager(app)
+# TODO: ver q la default config busca en headers, hacerlo andar y dsp buscar variedad
+app.config["JWT_SECRET_KEY"] =Config.JWT_SECRET
+jwt.init_app(app)
+
 #  see https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/config/#flask_sqlalchemy.config.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_DATABASE_URI'] =f'mysql+pymysql://{Config.MYSQL_DB_USER}:{Config.MYSQL_DB_PASSWORD}@{Config.MYSQL_DB_HOST}:{Config.MYSQL_DB_PORT}/{Config.MYSQL_DB_NAME}'
 
@@ -47,6 +50,7 @@ registerErrorHandlers(app)
 
 # Register routes
 app.register_blueprint(user_bp, url_prefix=f'/{BaseUrlRouting.USERS}')
+app.register_blueprint(auth_bp, url_prefix=f'/{BaseUrlRouting.AUTH}')
 
 
 if __name__ == '__main__':

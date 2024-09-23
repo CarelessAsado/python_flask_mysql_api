@@ -8,4 +8,5 @@ class Config:
     MYSQL_DB_HOST = os.getenv('MYSQL_DB_HOST')
     MYSQL_DB_PORT = os.getenv('MYSQL_DB_PORT')
     MYSQL_DB_NAME = os.getenv('MYSQL_DB_NAME')
+    JWT_SECRET = os.getenv('JWT_SECRET')
 

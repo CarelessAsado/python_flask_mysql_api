@@ -28,7 +28,7 @@ def getAllUsers():
 @jwt_required()
 def protected():
     # Access the identity of the current user with get_jwt_identity
-    current_user = get_jwt_identity()
+    current_user:User = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
 
 
@@ -54,6 +54,7 @@ def createUser():
     username = data.get('username')
     email = data.get('email')
     companyName = data.get('companyName')
+    password = data.get('password')
 
 
     # if not username or not email:
@@ -67,6 +68,7 @@ def createUser():
 
     # TODO: check how can these args be typed, I checked mypy, and also playing with BaseModel, but no easy solution yet
     new_user = User(username=username, email=email,company_id=new_company.id)
+    new_user.encodePassword(password)
     UserService.createUser(new_user,currentSession)
 
     currentSession.commit()

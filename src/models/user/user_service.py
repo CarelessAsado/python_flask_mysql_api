@@ -29,6 +29,6 @@ class UserService:
         return user
     
     @staticmethod
-    def findUserByUsername(userName=User.username)-> User:
-        user = db.session.execute(db.select(User).filter_by(username=userName)).scalar_one()
+    def findUserByEmail(email=User.email)-> User:
+        user = db.session.execute(db.select(User).filter_by(email=email)).scalar_one()
         return user
