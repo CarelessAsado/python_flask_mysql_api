@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Mapped, mapped_column,relationship
 from sqlalchemy import Integer, String
-from src.db.connect import db
+from src.db.connect import BaseModel
 from typing import List
 from src.models.user.user_model import User
 from src.models.facility.facility_model import Facility
 
-class Company(db.Model):
+class Company(BaseModel):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(150), unique=True) 
     users: Mapped[List[User]] = relationship(User.__name__)

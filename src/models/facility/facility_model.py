@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import Integer, String,ForeignKey
-from src.db.connect import db
+from src.db.connect import BaseModel
 from src.models.user.user_model import User
 
-class Facility(db.Model):
+class Facility(BaseModel):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(150), unique=True) 
     company_id: Mapped[int] = mapped_column(ForeignKey(f"company.id"))
